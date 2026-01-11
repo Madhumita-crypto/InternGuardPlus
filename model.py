@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -5,7 +6,10 @@ import streamlit as st
 
 @st.cache_resource
 def load_model():
-    data = pd.read_csv("data/internships.csv")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DATA_PATH = os.path.join(BASE_DIR, "data", "internships.csv")
+    
+    data = pd.read_csv(DATA_PATH)
 
     X = data["description"]
     y = data["label"]
