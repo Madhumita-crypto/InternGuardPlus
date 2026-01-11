@@ -1,14 +1,15 @@
-import os
 import pandas as pd
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import streamlit as st
 
 @st.cache_resource
 def load_model():
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # Streamlit Cloud-safe project root
+    BASE_DIR = os.getcwd()
     DATA_PATH = os.path.join(BASE_DIR, "data", "internships.csv")
-    
+
     data = pd.read_csv(DATA_PATH)
 
     X = data["description"]
@@ -25,6 +26,6 @@ def load_model():
 model, vectorizer = load_model()
 
 def predict_risk(text):
-    text_vec = vectorizer.transform([text])
-    prob = model.predict_proba(text_vec)[0][1]
+    vec = vectorizer.transform([text])
+    prob = model.predict_proba(vec)[0][1]
     return int(prob * 100)
